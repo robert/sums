@@ -2,11 +2,14 @@ import random
 
 import streamlit as st
 from lib import (
+    Add,
+    AdditionCrosses10Boundary,
+    AdditionCrosses100Boundary,
     Equal,
+    IsDivisibleBy,
     IsGreaterThan,
     IsLessThan,
     Literal,
-    Subtract,
     Variable,
     expression_string,
     find_bindings,
@@ -23,18 +26,30 @@ vars = {
     "z": z,
 }
 
-lhs = Subtract(x, y)
+lhs = Add(x, y)
 rhs = z
 
 constraints = [
-    IsGreaterThan(y, x),
-    IsGreaterThan(x, Literal(0)),
-    IsGreaterThan(y, Literal(0)),
-    IsLessThan(x, Literal(20)),
-    IsLessThan(y, Literal(20)),
+    # IsGreaterThan(y, x),
+    IsGreaterThan(x, Literal(100)),
+    IsLessThan(y, Literal(10)),
+    AdditionCrosses10Boundary(x, y),
+    # IsLessThan(x, Literal(20)),
+    # IsLessThan(y, Literal(20)),
     Equal(lhs, rhs),
 ]
-domains = {v.name: list(range(-100, 100)) for v in [x, y, z]}
+constraints = [
+    # IsGreaterThan(y, x),
+    IsGreaterThan(x, Literal(100)),
+    IsLessThan(y, Literal(100)),
+    IsDivisibleBy(x, Literal(10)),  # Remove to make harder
+    IsDivisibleBy(y, Literal(10)),
+    AdditionCrosses100Boundary(x, y),
+    # IsLessThan(x, Literal(20)),
+    # IsLessThan(y, Literal(20)),
+    Equal(lhs, rhs),
+]
+domains = {v.name: list(range(0, 1000)) for v in [x, y, z]}
 bindings = find_bindings(["x", "y", "z"], domains, constraints)
 
 
@@ -49,7 +64,16 @@ def main():
 
     if "problem" not in st.session_state:
         st.session_state.problem = get_next_problem()
-        st.session_state.hold_out = random.choice([x, y, z]).name
+        st.session_state.hold_out = random.choice(
+            [
+                y,
+                z,
+                z,
+                z,
+                z,
+                z,
+            ]
+        ).name
         st.session_state.correct_answer = False
 
     if st.session_state.correct_answer:
