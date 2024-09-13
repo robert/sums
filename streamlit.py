@@ -66,7 +66,7 @@ def main():
         st.session_state.problem = get_next_problem()
         st.session_state.hold_out = random.choice(
             [
-                y,
+                z,
                 z,
                 z,
                 z,
@@ -98,7 +98,7 @@ def main():
         )
 
     st.markdown(
-        f"<div style='font-size: 150px; text-align: center;'>{display_text}</div>",
+        f"<div style='font-size: 100px; text-align: center;'>{display_text}</div>",
         unsafe_allow_html=True,
     )
     st.markdown("<br/>" * 2, unsafe_allow_html=True)
