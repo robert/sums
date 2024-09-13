@@ -64,16 +64,7 @@ def main():
 
     if "problem" not in st.session_state:
         st.session_state.problem = get_next_problem()
-        st.session_state.hold_out = random.choice(
-            [
-                z,
-                z,
-                z,
-                z,
-                z,
-                z,
-            ]
-        ).name
+        st.session_state.hold_out = z.name
         st.session_state.correct_answer = False
 
     if st.session_state.correct_answer:
