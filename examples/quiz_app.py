@@ -4,20 +4,18 @@ import streamlit as st
 from streamlit.components.v1 import html
 from sumchef import (
     Equal,
+    IsDivisibleBy,
     IsGreaterThan,
     IsLessThan,
     Literal,
     Multiply,
     Variable,
     expression_string,
-    find_bindings,
+    gen_bindings,
 )
 
-"""
-A streamlit app that displays an infinite series of sums of the chosen form.
+st.set_page_config(page_title="Quiz time!", page_icon="⚽", layout="wide")
 
-Run `pip install streamlit` to install streamlit.
-"""
 
 x = Variable("x")
 y = Variable("y")
@@ -33,12 +31,13 @@ lhs = Multiply(x, y)
 rhs = z
 
 constraints = [
-    IsGreaterThan(x, Literal(100)),
-    IsLessThan(y, Literal(100)),
+    IsGreaterThan(x, Literal(10)),
+    IsDivisibleBy(x, Literal(10)),
+    IsLessThan(y, Literal(10)),
     Equal(lhs, rhs),
 ]
-domains = {v.name: list(range(0, 1000)) for v in [x, y, z]}
-bindings = find_bindings(["x", "y", "z"], domains, constraints)
+domains = {v.name: list(range(1, 1000)) for v in [x, y, z]}
+bindings = gen_bindings(["x", "y", "z"], domains, constraints)
 
 
 def get_next_problem():
@@ -46,10 +45,6 @@ def get_next_problem():
 
 
 def main():
-    st.set_page_config(
-        page_title="Baloney Plays Football", page_icon="⚽", layout="wide"
-    )
-
     if "problem" not in st.session_state:
         st.session_state.problem = get_next_problem()
         st.session_state.hold_out = z.name
