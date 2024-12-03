@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sumchef"
+version = "0.1.0"
+description = "Generate maths quizzes using powerful, flexible specifications."
+authors = [
+    { name = "Robert Heaton", email = "robqheaton@gmail.com.com" },
+]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/robert/sumchef"
+Repository = "https://github.com/robert/sumchef"

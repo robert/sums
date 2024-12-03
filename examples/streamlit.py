@@ -1,20 +1,23 @@
 import random
 
 import streamlit as st
-from lib import (
-    Add,
-    AdditionCrosses10Boundary,
-    AdditionCrosses100Boundary,
+from streamlit.components.v1 import html
+from sumchef import (
     Equal,
-    IsDivisibleBy,
     IsGreaterThan,
     IsLessThan,
     Literal,
+    Multiply,
     Variable,
     expression_string,
     find_bindings,
 )
-from streamlit.components.v1 import html
+
+"""
+A streamlit app that displays an infinite series of sums of the chosen form.
+
+Run `pip install streamlit` to install streamlit.
+"""
 
 x = Variable("x")
 y = Variable("y")
@@ -26,27 +29,12 @@ vars = {
     "z": z,
 }
 
-lhs = Add(x, y)
+lhs = Multiply(x, y)
 rhs = z
 
 constraints = [
-    # IsGreaterThan(y, x),
-    IsGreaterThan(x, Literal(100)),
-    IsLessThan(y, Literal(10)),
-    AdditionCrosses10Boundary(x, y),
-    # IsLessThan(x, Literal(20)),
-    # IsLessThan(y, Literal(20)),
-    Equal(lhs, rhs),
-]
-constraints = [
-    # IsGreaterThan(y, x),
     IsGreaterThan(x, Literal(100)),
     IsLessThan(y, Literal(100)),
-    IsDivisibleBy(x, Literal(10)),  # Remove to make harder
-    IsDivisibleBy(y, Literal(10)),
-    AdditionCrosses100Boundary(x, y),
-    # IsLessThan(x, Literal(20)),
-    # IsLessThan(y, Literal(20)),
     Equal(lhs, rhs),
 ]
 domains = {v.name: list(range(0, 1000)) for v in [x, y, z]}
